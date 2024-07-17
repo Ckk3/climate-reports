@@ -1,10 +1,12 @@
 from socketserver import TCPServer, BaseRequestHandler
+
+from database import setup_database
 from utils import add_new_user
 
 class TCPHandler(BaseRequestHandler):
     def handle(self):
         # Handle requests with clients info
-        data = self.request.recv(1024).strip().decode('utf-8')
+        data = self.request.recv(1024).decode('utf-8').strip()
         print(f"Data received: {data}")
         try:
             # Add new user to db
@@ -15,6 +17,9 @@ class TCPHandler(BaseRequestHandler):
 
 
 if __name__ == "__main__":
+    print("Setup database")
+    setup_database()
+    
     print("Starting TCP Server")
     HOST, PORT = "0.0.0.0", 5784
 

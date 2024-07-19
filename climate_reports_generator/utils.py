@@ -1,5 +1,10 @@
+import smtplib
+from email.message import EmailMessage
+
 from database import Session, User
 from datetime import datetime
+from env import EMAIL_SENDER, SMTP_SERVER, SMTP_PORT, SMTP_USERNAME, SMTP_PASSWORD
+from PDFReport import PDFReport
 
 
 def add_new_user(data):
@@ -28,10 +33,28 @@ def validate_date(date_text):
         raise ValueError(f"Incorrect date format: {date_text}. Should be YYYY-MM-DDTHH:MM")
 
 
-def send_email(user):
-    email = "teste"
-    print(f"Sending email with report to {email}")
-    pass
+def send_email(user, report, date):
+    # Create a multipart message
+    msg = EmailMessage()
+    msg['From'] = EMAIL_SENDER
+    msg['To'] = user.email
+    msg['Subject'] = date.strftime("%Y-%m-%d %H:%M")
+
+    msg.set_content(f"Dear {user.name},\nHere is the climate report from day  {msg['Subject']}.")
+
+    # Attach the PDF
+    msg.add_attachment(report, maintype='application', subtype='pdf', filename='report.pdf')
+
+
+    # Send the email
+    try:
+        with smtplib.SMTP(SMTP_SERVER, SMTP_PORT) as server:
+            server.starttls()
+            server.login(SMTP_USERNAME, SMTP_PASSWORD)
+            server.send_message(msg)
+            print(f"Email sent successfully to {user.email}")
+    except Exception as e:
+        print(f"Failed to send email to {user.email}. Error: {str(e)}")
 
 
 def get_users_from_db(phones):
@@ -40,3 +63,19 @@ def get_users_from_db(phones):
         users = session.query(User).filter(User.phone.in_(phones)).all()
     
     return users
+
+
+def generate_pdf_report(content, user, date):
+    pdf = PDFReport(user_name=user.name)
+
+    # Add content to the PDF
+    pdf.add_text("This is a centered line of text.", (pdf.width / 2, pdf.height / 2))
+
+
+    # Define the file path
+    file_path = f"./climate_reports_generator/generated_reports/report_{date}_{user}.pdf"
+
+    # Save the PDF to a file and get the PDF bytes
+    pdf_bytes = pdf.save_pdf_to_file(file_path)
+
+    return pdf_bytes

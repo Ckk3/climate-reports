@@ -14,30 +14,19 @@ def main():
 
     args = parser.parse_args()
 
-    phones = args.TELEFONE
-    date = args.DATA
-    send_email = args.ENVIA_EMAIL
-    bruto_path = args.BRUTO
-
-    print("Phones:", phones)
-    print("Date:", date)
-    print("Send email:", send_email)
-    print("Bruto path:", bruto_path)
-
-    with open(bruto_path, 'r', encoding="utf-8") as file:
+    with open(args.BRUTO, 'r', encoding="utf-8") as file:
         # Getting data from file
         raw_content = json.load(file)
 
     # Get users from database
-    users = utils.get_users_from_db(phones)
-
+    users = utils.get_users_from_db(args.TELEFONE)
 
     #  Generate report
     for user in users:
-        
+        report = utils.generate_pdf_report(raw_content, user, args.DATA)
         # Send email
-        if send_email is True:
-            utils.send_email(user=user)
+        if args.ENVIA_EMAIL is True:
+            utils.send_email(user=user, report=report, date=args.DATA)
 
 
 if __name__ == "__main__":

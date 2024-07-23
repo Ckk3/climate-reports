@@ -86,7 +86,6 @@ class PDFReport:
         self.add_bold_text(f'{info["data"]} ', (text_position[0], text_position[1] - 23), font_size=12)
         return self.add_paragraph(info['mensagem'], (text_position[0] + text_width, text_position[1] - 23), font_size=12)
 
-
     def add_paragraph(self, text, text_position, font_size=12):
         # Add text paragraphs, respecting margins 
         MARGIN_LEFT = 30
@@ -133,6 +132,7 @@ class PDFReport:
         return lines
 
     def _check_if_content_can_fit_in_page(self, info, position):
+        # Check if the content can fit in the current page
         MARGIN_LEFT = 30
         LINE_HEIGHT = 14
         MARGIN_RIGHT = 30
@@ -148,6 +148,7 @@ class PDFReport:
         return True
 
     def _add_new_page(self, title):
+        # Add a new page and add the default header
         self.canvas.showPage()
         self.add_header()
         self.canvas.setFillColor(colors.black)

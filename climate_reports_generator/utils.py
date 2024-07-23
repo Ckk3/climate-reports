@@ -68,14 +68,19 @@ def get_users_from_db(phones):
 def generate_pdf_report(content, user, date):
     pdf = PDFReport(user_name=user.name)
 
-    # Add content to the PDF
-    pdf.add_text("This is a centered line of text.", (pdf.width / 2, pdf.height / 2))
-
+    # Add Análise info
+    try:
+        # Remove the [0] and add the other too
+        pdf.add_info(title="Análise", data=content["análise"])
+    except KeyError:
+        print("The file does not has analysis information")
 
     # Define the file path
-    file_path = f"./climate_reports_generator/generated_reports/report_{date}_{user}.pdf"
+    file_path = f"./climate_reports_generator/generated_reports/report_{date}_{user.phone}.pdf"
 
     # Save the PDF to a file and get the PDF bytes
     pdf_bytes = pdf.save_pdf_to_file(file_path)
 
     return pdf_bytes
+
+

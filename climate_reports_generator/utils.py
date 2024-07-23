@@ -70,10 +70,14 @@ def generate_pdf_report(content, user, date):
 
     # Add Análise info
     try:
-        # Remove the [0] and add the other too
         pdf.add_info(title="Análise", data=content["análise"])
     except KeyError:
         print("The file does not has analysis information")
+    # Add Previsao info
+    try:
+        pdf.add_info(title="Previsão", data=content["previsao"], start_in_a_new_page=True)
+    except KeyError:
+        print("The file does not has prediction information")
 
     # Define the file path
     file_path = f"./climate_reports_generator/generated_reports/report_{date}_{user.phone}.pdf"

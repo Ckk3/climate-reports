@@ -47,9 +47,9 @@ class PDFReport:
         self.add_bold_text(f"Data de confecção: ", (365, self.height - 70), font_size=15)
         self.add_text(self.today_date, (365 + text_width, self.height - 70), font_size=15)
 
-    def add_info(self, title, data:list, add_new_page_at_end=False):
+    def add_info(self, title, data:list, start_in_a_new_page=False):
         # Add the info section
-        if add_new_page_at_end is True:
+        if start_in_a_new_page is True:
             self._add_new_page(title)
         else:
             self.canvas.setFillColor(colors.black)
@@ -68,7 +68,7 @@ class PDFReport:
             is_strong = "forte" in info["mensagem"]
             self._add_phenomenon_title(info["fenomeno"], text_position=text_position, is_strong=is_strong)
             height_position = self._add_phenomenon_info(info, text_position=text_position)
-            text_position = (text_position[0], height_position - 30)
+            text_position = (text_position[0], height_position - 20)
 
     def _add_phenomenon_title(self, phenomenon_name, text_position:tuple, is_strong:bool):
         # Add a rectangle around the phenomenon name
@@ -125,6 +125,11 @@ class PDFReport:
                 lines.append(current_line)
                 current_line = word
                 first_line = False
+
+        # Add the last line
+        if current_line:
+            lines.append(current_line)
+        
         return lines
 
     def _check_if_content_can_fit_in_page(self, info, position):

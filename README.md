@@ -1,7 +1,7 @@
 # Climate Reports
 ## Description
 
-Climate Reports is a Python application designed to process climate data and generate PDF reports. The application provides functionality to create, manage, and send climate reports via email.
+Climate Reports is a Python application designed to process climate data and generate PDF reports. The application provides functionality to create climate reports and send via email.
 
 You can see a generated report example [here](<readme_assets/report_2024-01-01 00:00:00_01234567891.pdf>)
 ![alt text](readme_assets/image-1.png)

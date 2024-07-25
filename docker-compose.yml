@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+    ports:
+      # TCp server
+      - "5784:5784"
+      # Ports to SMTP connections
+      - "25:25"    
+      - "465:465"  
+      - "587:587"
+    volumes:
+      - .:/app
+    environment:
+      - PYTHONUNBUFFERED=1
+    command: ["conda", "run", "-n", "climate_env", "python", "climate_reports_generator/main.py"]
+    restart: always

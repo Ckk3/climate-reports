@@ -19,6 +19,7 @@ def add_new_user(data):
         with Session() as session:
             session.add(new_user)
             session.commit()
+        logger.info(f"New user '{name}' added to database")
     except:
         raise Exception("Error: please send the data with the following format: 'name,email,phone,age'")
 
@@ -66,6 +67,9 @@ def get_users_from_db(phones):
     with Session() as session:
         users = session.query(User).filter(User.phone.in_(phones)).all()
     
+    if len(users) == 0:
+        logger.error(f"No users found with phone numbers: {phones}")
+        raise Exception("No users found with the provided phone numbers")
     return users
 
 

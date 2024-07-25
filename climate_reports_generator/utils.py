@@ -50,7 +50,6 @@ def send_email(user, report, date):
     # Attach the PDF
     msg.add_attachment(report, maintype='application', subtype='pdf', filename='report.pdf')
 
-
     # Send the email
     try:
         with smtplib.SMTP(SMTP_SERVER, SMTP_PORT) as server:

@@ -37,9 +37,6 @@ To set up and run the application using Docker Compose:
     cd /app
     ```
 
-6. Run Commands:
-    
-    You can now execute any commands needed within the container.
 
 ### Manual Setup
 
@@ -60,11 +57,6 @@ If you prefer to set up the environment manually:
 3. Setup Configuration:
     - Duplicate env-sample.py and rename it to env.py.
     - Add SMTP configurations to env.py.
-
-4. Navigate to the Application Directory:
-    ```bash
-    cd climate_reports_generator
-    ```
 
 
 ## Usage

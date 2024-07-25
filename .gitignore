@@ -2,5 +2,5 @@ __pycache__
 .pytest_cache
 users.db
 env.py
-*.pdf
+climate_reports_generator/generated_reports/*.pdf
 *.log

@@ -1,9 +1,13 @@
 import datetime
 import io
+import logging
 from reportlab.lib.pagesizes import A4
 from reportlab.pdfgen import canvas
 from reportlab.lib import colors
+from logging_config import setup_logging
 
+setup_logging()
+logger = logging.getLogger(__name__)
 
 class PDFReport:
     def __init__(self, user_name):
@@ -58,7 +62,7 @@ class PDFReport:
         required_keys = {"data", "fenomeno", "mensagem"}
         for info in data:
             if all(key in info for key in required_keys) is False:
-                print("Skipping info section because does not has all required keys")
+                logger.info("Skipping info section because does not has all required keys")
                 continue
             # check if the content can fit in page
             if self._check_if_content_can_fit_in_page(info, text_position) is False:
@@ -156,9 +160,12 @@ class PDFReport:
 
     def save_pdf_to_file(self, file_path):
         # Save the PDF content to a file
+        logger.info("Saving pdf to file")
         self.canvas.save()
         pdf_bytes = self.buffer.getvalue()
         with open(file_path, 'wb') as f:
             f.write(pdf_bytes)
+        
+        logger.info(f"Saved successfully to file {file_path}")
         self.buffer.close()
         return pdf_bytes

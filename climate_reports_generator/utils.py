@@ -1,10 +1,15 @@
 import smtplib
+import logging
 from email.message import EmailMessage
 
 from database import Session, User
 from datetime import datetime
 from env import EMAIL_SENDER, SMTP_SERVER, SMTP_PORT, SMTP_USERNAME, SMTP_PASSWORD
 from PDFReport import PDFReport
+from logging_config import setup_logging
+
+setup_logging()
+logger = logging.getLogger(__name__)
 
 
 def add_new_user(data):
@@ -52,9 +57,9 @@ def send_email(user, report, date):
             server.starttls()
             server.login(SMTP_USERNAME, SMTP_PASSWORD)
             server.send_message(msg)
-            print(f"Email sent successfully to {user.email}")
+            logger.info(f"Email sent successfully to {user.email}")
     except Exception as e:
-        print(f"Failed to send email to {user.email}. Error: {str(e)}")
+        logger.error(f"Failed to send email to {user.email}. Error: {str(e)}")
 
 
 def get_users_from_db(phones):
@@ -72,12 +77,12 @@ def generate_pdf_report(content, user, date):
     try:
         pdf.add_info(title="Análise", data=content["análise"])
     except KeyError:
-        print("The file does not has analysis information")
+        logger.info("The file does not has analysis information")
     # Add Previsao info
     try:
         pdf.add_info(title="Previsão", data=content["previsao"], start_in_a_new_page=True)
     except KeyError:
-        print("The file does not has prediction information")
+        logger.info("The file does not has prediction information")
 
     # Define the file path
     file_path = f"./climate_reports_generator/generated_reports/report_{date}_{user.phone}.pdf"

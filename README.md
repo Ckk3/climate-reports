@@ -102,6 +102,10 @@ This command will generate the PDF, save it to `climate_reports_generator/genera
     - Description: A flag to indicate if the report should be sent via email. If this flag is included, the generated report will be sent to the users' email addresses.
     - Type: Boolean flag (true if provided, false otherwise)
 
+    <details>
+    <summary>Example Command</summary>
+    <code>python climate_reports_generator/report_generator.py 01234567891,78945612348 2024-01-01T00:00 climate_reports_generator/raw_data/test_data.txt --ENVIA_EMAIL</code>
+    </details>
 
 ### Test Email Functionality
 To test email functionality, use an SMTP service such as Mailtrap (free plan allows sending emails to registered address). The application will send the report to the user’s email.

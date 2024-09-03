@@ -106,4 +106,4 @@ To test email functionality, use an SMTP service such as Mailtrap (free plan all
 
 ### Example Output
 The generated report will be attached to an email. Here is a example:
-![alt text](image.png)
+![alt text](readme_assets/image.png)
